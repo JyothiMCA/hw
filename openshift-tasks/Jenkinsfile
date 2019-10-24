@@ -8,9 +8,9 @@ podTemplate(
       name: "jnlp",
       image: "docker-registry.default.svc:5000/${GUID}-jenkins/jenkins-agent-appdev",
       resourceRequestMemory: "2Gi",
-      resourceLimitMemory: "2Gi",
+      resourceLimitMemory: "3Gi",
       resourceRequestCpu: "2",
-      resourceLimitCpu: "2"
+      resourceLimitCpu: "3"
     )
   ]
 ) {
@@ -137,7 +137,7 @@ podTemplate(
 
 				  echo "Waiting for ReplicationController tasks-${dc_version} to be ready"
 				  while (rc.spec.replicas != rc.status.readyReplicas) {
-					sleep 30
+					sleep 60
 					rc = openshift.selector("rc", "tasks-${dc_version}").object()
 				  }
 				}
@@ -215,7 +215,7 @@ podTemplate(
 					  def rc_prod = openshift.selector("rc", "${destApp}-${dc_version}").object()
 					  echo "Waiting for ${destApp} to be ready"
 					  while (rc_prod.spec.replicas != rc_prod.status.readyReplicas) {
-						sleep 30
+						sleep 60
 						rc_prod = openshift.selector("rc", "${destApp}-${dc_version}").object()
 					  }
 					}
@@ -244,7 +244,7 @@ podTemplate(
 					  def rc_prod = openshift.selector("rc", "${destApp}-${dc_version}").object()
 					  echo "Waiting for ${destApp} to be ready --Again"
 					  while (rc_prod.spec.replicas != rc_prod.status.readyReplicas) {
-						sleep 30
+						sleep 60
 						rc_prod = openshift.selector("rc", "${destApp}-${dc_version}").object()
 					  }
 				  def route = openshift.selector("route/tasks").object()
